@@ -1,0 +1,14 @@
+{
+  "name": "node-ftp-promise",
+  "version": "1.0.0",
+  "description": "A wrapper to promisfy the node-ftp module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Sean Fallmann",
+  "license": "ISC",
+  "dependencies": {
+    "ftp": "^0.3.10"
+  }
+}
