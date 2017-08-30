@@ -10,5 +10,9 @@
   "license": "ISC",
   "dependencies": {
     "ftp": "^0.3.10"
+  },
+  "devDependencies": {
+    "ftp-srv": "^2.11.2",
+    "mocha": "^3.5.0"
   }
 }

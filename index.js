@@ -35,7 +35,7 @@ class FTP{
     return new Promise ((resolve, reject) => {
       this.client.mkdir(dirname, (error)=>{
         if (error){
-          if (error.message === 'Cannot create a file when that file already exists.' && ignore){
+          if (ignore){
             return resolve(`directory named ${dirname} already exists`);
           }
           return reject(error);
