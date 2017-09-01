@@ -4,7 +4,7 @@
   "description": "A wrapper to promisfy the node-ftp module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Sean Fallmann",
   "license": "ISC",
@@ -12,6 +12,7 @@
     "ftp": "^0.3.10"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "ftp-srv": "^2.11.2",
     "mocha": "^3.5.0"
   }
