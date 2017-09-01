@@ -130,6 +130,28 @@ class FTP{
     })
   }
 
+  get(path, compression) {
+    return new Promise((resolve, reject) => {
+      this.client.get(path, (error, stream)=>{
+        if (error){
+          reject({
+            status: 'error',
+            command: 'get',
+            error
+          });
+        }
+        resolve({
+          status: 'success',
+          command: 'get',
+          file: {
+            name: path,
+            data: stream
+          }
+        });
+      });
+    })
+  }  
+
   end(){
     this.client.end();
   }

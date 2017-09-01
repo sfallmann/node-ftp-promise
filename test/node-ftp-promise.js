@@ -63,9 +63,12 @@ describe('put', () => {
   it('should put files successfully', (done) => {
     ftpClient.connect(clientConfig)
       .then(() => {
+        return ftpClient.cwd('All Folders/MyFolder/');
+      })
+      .then(() => {
         const files = [];
         for (let i = 0; i < 5; i++){
-          files.push(ftpClient.put(`Text: ${getTime()}`, `All Folders/MyFolder/File ${i}.txt`));
+          files.push(ftpClient.put(`Text: ${getTime()}`, `File ${i}.txt`));
         }
         return Promise.all(files);
       })
@@ -80,12 +83,40 @@ describe('put', () => {
   });
 });
 
+describe('get', () => {
+  const getTime = () => {
+    return new Date().getTime().toString();
+  }
+  it('should get file successfully', (done) => {
+    let file;
+    ftpClient.connect(clientConfig)
+      .then(() => {
+        return ftpClient.cwd('test/');
+      })
+      .then((res) => {
+        console.log(res);
+        return ftpClient.get('testimg.jpg');
+      })
+      .then((res) => {
+        file = res.file.data;
+        return ftpClient.cwd('../All Folders/');
+      })      
+      .then((res) => {
+        console.log(file)
+        file.pipe();
+        return ftpClient.put(file.pipe(), 'getfiletest.jpg');
+      })
+      .then((res) => {
+        console.log(res);
+        done();
+      })
+      .catch(done);
+  });
+});
+
 describe('rmdir', () => {
   it('should rmdir successfully', (done) => {
     ftpClient.connect(clientConfig)
-      .then(() => {
-        return ftpClient.cwd('../');
-      })
       .then(() => {
         return ftpClient.rmdir('All Folders', true);
       })
@@ -97,4 +128,3 @@ describe('rmdir', () => {
       });
   })
 });
-
