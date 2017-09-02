@@ -4,7 +4,13 @@ const {FTP} = require('../index');
 const testServer = require('../test-server/test-server');
 
 const ftpClient = new FTP();
-const clientConfig = {host:'127.0.0.1', user:'username', password:'password'};
+
+let localhost = '127.0.0.1';
+if (process.env.NODE_ENV){
+  localhost = '0.0.0.0';
+}
+
+const clientConfig = {host:localhost, user:'username', password:'password', port:3000};
 const eventConfig = {
   ready: () => {console.info('do something on ready')},
   greeting: (msg) => {console.log(msg)},
