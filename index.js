@@ -47,6 +47,24 @@ class FTP{
     });
   }
 
+  binary() {
+    return new Promise((resolve, reject)=>{
+      this.client.binary((error)=>{
+        if (error){
+          reject({
+            status: 'error',
+            command: 'binary',
+            error
+          });
+        }
+        resolve({
+          status: 'success', 
+          command: 'binary'
+        });
+      });
+    });
+  }  
+
   mkdir(dirname, ignore, recursive) {
     return new Promise ((resolve, reject) => {
       this.client.mkdir(dirname, recursive, (error)=>{
@@ -111,9 +129,9 @@ class FTP{
     });
   }
 
-  put(data, filename) {
+  put(data, filename, useCompression) {
     return new Promise((resolve, reject) => {
-      this.client.put(data, filename, (error)=>{
+      this.client.put(data, filename, useCompression, (error)=>{
         if (error){
           reject({
             status: 'error',
@@ -133,6 +151,7 @@ class FTP{
   get(path, compression) {
     return new Promise((resolve, reject) => {
       this.client.get(path, (error, stream)=>{
+
         if (error){
           reject({
             status: 'error',
@@ -145,7 +164,7 @@ class FTP{
           command: 'get',
           file: {
             name: path,
-            data: stream
+            stream
           }
         });
       });

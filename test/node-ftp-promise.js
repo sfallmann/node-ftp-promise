@@ -30,7 +30,7 @@ describe('mkdir', () => {
   it('should mkdir successfully', (done) => {
     ftpClient.connect(clientConfig)
       .then(() => {
-        return ftpClient.mkdir('All Folders/MyFolder/', false, true);
+        return ftpClient.mkdir('MyFolder/', false, true);
       })
       .then((res) => {
         expect(res.status).to.equal('success');
@@ -45,7 +45,7 @@ describe('cwd', () => {
   it('should cwd successfully', (done) => {
     ftpClient.connect(clientConfig)
       .then(() => {
-        return ftpClient.cwd('All Folders/MyFolder/');
+        return ftpClient.cwd('MyFolder/');
       })
       .then((res) => {
         expect(res.status).to.equal('success');
@@ -63,7 +63,7 @@ describe('put', () => {
   it('should put files successfully', (done) => {
     ftpClient.connect(clientConfig)
       .then(() => {
-        return ftpClient.cwd('All Folders/MyFolder/');
+        return ftpClient.cwd('MyFolder/');
       })
       .then(() => {
         const files = [];
@@ -72,14 +72,15 @@ describe('put', () => {
         }
         return Promise.all(files);
       })
-      .then((files) => {
-        files.forEach((file) => {
+      .then((res) => {
+        res.forEach((file) => {
           expect(file.status).to.equal('success');
         });
         ftpClient.end();
         ftpClient.destroy();
         done();
-      });
+      })
+      .catch(done);      
   });
 });
 
@@ -88,43 +89,53 @@ describe('get', () => {
     return new Date().getTime().toString();
   }
   it('should get file successfully', (done) => {
-    let file;
     ftpClient.connect(clientConfig)
       .then(() => {
-        return ftpClient.cwd('test/');
+        return ftpClient.cwd('test');
       })
       .then((res) => {
-        console.log(res);
         return ftpClient.get('testimg.jpg');
       })
       .then((res) => {
-        file = res.file.data;
-        return ftpClient.cwd('../All Folders/');
-      })      
-      .then((res) => {
-        console.log(file)
-        file.pipe();
-        return ftpClient.put(file.pipe(), 'getfiletest.jpg');
-      })
-      .then((res) => {
-        console.log(res);
-        done();
+        expect(res.status).to.equal('success');
+        ftpClient.end();
+        ftpClient.destroy();
+        done();        
       })
       .catch(done);
-  });
+  })
+});
+
+describe('list', () => {
+  it('should get file successfully', (done) => {
+    ftpClient.connect(clientConfig)
+      .then(() => {
+        return ftpClient.list('test/');
+      })
+      .then((res) => {
+        expect(res.status).to.equal('success');
+        expect(res.list).to.contain.lengthOf(2);
+        ftpClient.end();
+        ftpClient.destroy();
+        done();        
+      })
+      .catch(done);
+  })
 });
 
 describe('rmdir', () => {
   it('should rmdir successfully', (done) => {
+
     ftpClient.connect(clientConfig)
       .then(() => {
-        return ftpClient.rmdir('All Folders', true);
+        return ftpClient.rmdir('MyFolder/', true);
       })
       .then((res) => {
         expect(res.status).to.equal('success');
         ftpClient.end();
         ftpClient.destroy();
         done();
-      });
+      })
+      .catch(done);
   })
 });
