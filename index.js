@@ -1,5 +1,4 @@
 'use strict';
-
 const ftplib = require('ftp');
 
 class FTP{

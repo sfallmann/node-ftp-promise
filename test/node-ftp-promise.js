@@ -1,5 +1,4 @@
 'use strict';
-
 const expect = require('chai').expect;
 const {FTP} = require('../index');
 const testServer = require('../test-server/test-server');
